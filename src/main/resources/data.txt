@@ -1,0 +1,33 @@
+INSERT INTO rest_db.oauth_client_details (client_id, client_secret, web_server_redirect_uri, scope, access_token_validity, refresh_token_validity, resource_ids, authorized_grant_types, additional_information)
+VALUES ('client', '{bcrypt}$2a$10$zFQVDnrgtkYB.Jr5Yvl6BuPoVjd7sGKw8RP.JuOlppEfinaPPV0E2', 'http://localhost:8080/code', 'READ,WRITE', '3600', '10000', 'microservice', 'authorization_code,password,refresh_token,implicit', '{}');
+
+INSERT INTO rest_db.permissions (name)
+VALUES 	('create_profile'),
+		('read_profile'),
+		('update_profile'),
+		('delete_profile');
+
+INSERT INTO rest_db.roles (name)
+VALUES ('ROLE_admin'),('ROLE_editor'),('ROLE_operator');
+
+INSERT INTO rest_db.permission_roles (permission_id, role_id)
+VALUES 	(1,1), /*create-> admin */
+		(2,1), /* read admin */
+		(3,1), /* update admin */
+		(4,1), /* delete admin */
+		(2,2), /* read Editor */
+		(3,2), /* update Editor */
+		(2,3); /* read operator */
+
+INSERT INTO rest_db.users (created_at, updated_at,version,account_non_expired, account_non_locked, credentials_non_expired,email,enabled,password,user_name)
+VALUES (sysdate(),sysdate(),0,1,1,1,'behnaz@gmail.com',1,'{bcrypt}$2a$12$Vl.Kx4QFtQIyZs33ZyAw4eGZ0Bm9dR/ftP4d1QCmA9tL1Jb0OaS16','admin1');
+
+/*
+ passowrds:
+ admin1 - admin1
+ admin2 - admin2
+ */
+
+INSERT INTO rest_db.role_users (role_id, user_id)
+VALUES  (1, 1), /* admin-admin1 */
+		(1, 2); /* admin-admin2 */
