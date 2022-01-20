@@ -33,6 +33,10 @@ public class ProductService {
         return productRepository.findByCode(code);
     }
 
+    public Integer cartHasItem(Long id) {
+        return productRepository.cartHasItem(id);
+    }
+
     public Product saveProduct(@Valid Product product){
         return productRepository.save(product);
     }

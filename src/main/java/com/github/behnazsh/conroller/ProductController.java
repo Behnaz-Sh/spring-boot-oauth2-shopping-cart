@@ -1,5 +1,6 @@
 package com.github.behnazsh.conroller;
 
+import com.github.behnazsh.common.ExceptionResponse;
 import com.github.behnazsh.common.RestUtil;
 import com.github.behnazsh.conroller.model.ProductDto;
 import com.github.behnazsh.dao.entity.Product;
@@ -10,10 +11,12 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -78,6 +81,13 @@ public class ProductController {
     public ResponseEntity deleteProduct(@PathVariable("id") Long id) {
         Optional<Product> product= RestUtil.checkResourceAvailable(productService.findProductById(id),
                 messageSource.getMessage("product.notFound", null, Locale.ENGLISH));
+        if (null != productService.cartHasItem(product.get().getId())) {
+            ExceptionResponse response = new ExceptionResponse();
+            response.setException(HttpStatus.FORBIDDEN.name());
+            response.setMessage(Collections.singletonList(messageSource.getMessage("deleteForbidden", null, Locale.ENGLISH)));
+            response.setDetails("");
+            return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+        }
         productService.deleteProduct(product.get().getId());
         LOG.info("Deleted product details for id: {}" , product.get().getId());
         return new ResponseEntity<>(OK);

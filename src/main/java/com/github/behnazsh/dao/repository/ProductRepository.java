@@ -14,10 +14,12 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository extends JpaRepository <Product, Long> {
 
-    @Query(value = "SELECT * FROM products p WHERE p.PRODUCT_CODE= :code LIMIT 1", nativeQuery = true)
+    @Query(value = "SELECT * FROM products p WHERE p.product_code= :code LIMIT 1", nativeQuery = true)
     Optional<Product> findByCode(String code);
 
-    @Query(value = "SELECT * FROM products p WHERE p.PRODUCT_NAME= :name AND p.ID!= :id LIMIT 1", nativeQuery = true)
+    @Query(value = "SELECT * FROM products p WHERE p.product_name= :name AND p.ID!= :id LIMIT 1", nativeQuery = true)
     Optional<Product> productNameExist(String name, Long id);
 
+    @Query(value = "SELECT 1 FROM cart_items ci WHERE ci.product_id = :id", nativeQuery = true)
+    Integer cartHasItem(Long id);
 }
