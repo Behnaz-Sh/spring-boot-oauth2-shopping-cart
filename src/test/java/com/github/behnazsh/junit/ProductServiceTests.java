@@ -14,8 +14,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import java.util.Optional;
 
 import static junit.framework.TestCase.assertNotNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -40,7 +39,7 @@ public class ProductServiceTests {
     }
 
     @Test
-    public void createProductSuccessfully() throws Exception {
+    public void crudProductSuccessfully() throws Exception {
         when(productRepositoryMock.findById(eq(Long.parseLong("1")))).thenReturn(Optional.empty());
         doAnswer(returnsFirstArg()).when(productRepositoryMock).save(any(Product.class));
 
@@ -48,6 +47,11 @@ public class ProductServiceTests {
         assertEquals("Book", product.getName());
         assertNotNull(product.getCode());
 
+        product.setPrice(Double.parseDouble("50.99"));
+        product.setDesc("Tech related");
+        product= productService.saveProduct(product);
+        assertNotEquals("fiction", product.getDesc());
+        assertNotNull(productService.findProductByCode(product.getCode()));
         assertNotNull(productService.findProductById(product.getId()));
         productService.deleteProduct(product.getId());
         assertFalse(productService.findProductById(product.getId()).isPresent());
@@ -59,9 +63,8 @@ public class ProductServiceTests {
         product.setVersion(Long.parseLong("0"));
         product.setCode("P1000000001");
         product.setName("Book");
-        product.setDesc("Hello");
+        product.setDesc("fiction");
         product.setPrice(Double.parseDouble("10.99"));
         return product;
     }
-
 }

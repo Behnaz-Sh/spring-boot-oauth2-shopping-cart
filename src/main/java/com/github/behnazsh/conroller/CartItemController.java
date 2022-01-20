@@ -78,7 +78,7 @@ public class CartItemController {
 		CartItem cartItem = new CartItem();
 		cartItem.setQuantity(1);
 		cartItem.setProduct(product.orElse(null));
-		cartItem.setAmount(product.get().getPrice() * 1);
+		cartItem.setAmount(product.get().getPrice());
 		cartItem.setCartId(cart.getId());
 		crEdCartItem = cartItemService.addOrUpdateCartItem(cartItem);
 		LOG.info("Added to the cart with id: {} and for the item with id: {}" , cart.getId(), crEdCartItem.getId());

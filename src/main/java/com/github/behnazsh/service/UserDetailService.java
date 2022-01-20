@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import static org.slf4j.LoggerFactory.getLogger;
-
 /**
  * @author Behnaz Sh
  */

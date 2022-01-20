@@ -16,6 +16,10 @@ public class CartItemService {
 	@Autowired
 	private CartItemRepository cartItemRepository;
 
+	public CartItemService(CartItemRepository cartItemRepository) {
+		this.cartItemRepository= cartItemRepository;
+	}
+
 	public CartItem addOrUpdateCartItem(CartItem cartItem) {
 		return cartItemRepository.save(cartItem);
 	}

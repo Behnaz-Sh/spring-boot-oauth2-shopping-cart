@@ -39,7 +39,7 @@ public class ProductController {
     @Autowired
     private MessageSource messageSource;
 
-    @PostMapping
+    @PostMapping(consumes = {"application/json"} , produces = {"application/json"})
     @ApiOperation(value = "Create a product", notes = "Returns created product")
     public ResponseEntity createProduct(@RequestBody @Valid ProductDto productDto) {
         Product crProduct = productService.saveProduct(modelMapper.map(productDto, Product.class));
